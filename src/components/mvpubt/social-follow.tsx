@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { social, joinMessage } from "@/config/site";
+import type { SocialLink } from "@/types";
 import { Container } from "@/components/shared/container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { SocialLinkCard } from "@/components/shared/social-link-card";
 import { MotionStagger, MotionItem } from "@/components/shared/motion";
 
-export function SocialFollow() {
+/** links verilmezse config'teki sosyal bağlantılar kullanılır. */
+export function SocialFollow({ links = social }: { links?: SocialLink[] }) {
   return (
     <section className="py-24 md:py-32">
       <Container>
@@ -15,7 +17,7 @@ export function SocialFollow() {
           description={joinMessage.description}
         />
         <MotionStagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {social.map((link) => (
+          {links.map((link) => (
             <MotionItem key={link.name}>
               <SocialLinkCard
                 href={link.href}

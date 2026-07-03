@@ -570,6 +570,27 @@ export interface Database {
         };
         Relationships: [];
       };
+      settings: {
+        Row: {
+          id: string;
+          key: string;
+          value: Json;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          key: string;
+          value: Json;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          key?: string;
+          value?: Json;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       revision_requests: {
         Row: {
           id: string;

@@ -9,7 +9,24 @@ import { Logo } from "@/components/shared/logo";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 
-export function Hero() {
+export interface HeroContent {
+  title: string;
+  description: string;
+  primaryCtaLabel: string;
+  primaryCtaHref: string;
+  secondaryCtaLabel: string;
+  secondaryCtaHref: string;
+}
+
+/** İçerik verilmezse config varsayılanları kullanılır (admin ayarları boşken). */
+export function Hero({ content }: { content?: Partial<HeroContent> }) {
+  const title = content?.title ?? brand.slogan;
+  const description = content?.description ?? brand.description;
+  const primaryCtaLabel = content?.primaryCtaLabel ?? "Topluluğa Katıl";
+  const primaryCtaHref = content?.primaryCtaHref ?? "/basvurular";
+  const secondaryCtaLabel = content?.secondaryCtaLabel ?? "Etkinlikleri Keşfet";
+  const secondaryCtaHref = content?.secondaryCtaHref ?? "/etkinlikler";
+
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -53,22 +70,22 @@ export function Hero() {
           </div>
 
           <h1 className="text-3xl font-bold leading-[1.15] tracking-tight md:text-5xl lg:text-6xl">
-            <span className="text-gradient">{brand.slogan}</span>
+            <span className="text-gradient">{title}</span>
           </h1>
 
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-slate-300 md:text-xl">
-            {brand.description}
+            {description}
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
             <Button asChild size="lg" className="h-12">
-              <Link href="/basvurular">
-                Topluluğa Katıl
+              <Link href={primaryCtaHref}>
+                {primaryCtaLabel}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="h-12">
-              <Link href="/etkinlikler">Etkinlikleri Keşfet</Link>
+              <Link href={secondaryCtaHref}>{secondaryCtaLabel}</Link>
             </Button>
           </div>
         </motion.div>
