@@ -39,6 +39,7 @@ export interface Database {
           instagram_url: string | null;
           interests: Json;
           newsletter_opt_in: boolean;
+          newsletter_token: string;
           kvkk_consent_at: string | null;
           created_at: string;
           updated_at: string;
@@ -63,6 +64,7 @@ export interface Database {
           instagram_url?: string | null;
           interests?: Json;
           newsletter_opt_in?: boolean;
+          newsletter_token?: string;
           kvkk_consent_at?: string | null;
           created_at?: string;
           updated_at?: string;
@@ -87,6 +89,7 @@ export interface Database {
           instagram_url?: string | null;
           interests?: Json;
           newsletter_opt_in?: boolean;
+          newsletter_token?: string;
           kvkk_consent_at?: string | null;
           created_at?: string;
           updated_at?: string;

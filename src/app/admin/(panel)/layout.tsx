@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 const adminLinks = [
   { href: "/admin/updates", label: "Güncellemeler" },
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/mail", label: "Mail Merkezi" },
   { href: "/admin/announcements", label: "Duyurular" },
   { href: "/admin/blog", label: "Blog" },
   { href: "/admin/webinars", label: "Webinarlar" },

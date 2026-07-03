@@ -6,6 +6,7 @@ export type UserEmailTemplate =
   | "reminder"
   | "certificate"
   | "thank-you"
+  | "newsletter"
   | "custom";
 
 export interface RenderedEmail {
@@ -107,6 +108,37 @@ export function registrationConfirmationEmail(
     .join("\n");
 
   return { subject, html, text };
+}
+
+/**
+ * Serbest içerikli kullanıcı maili (mail merkezi + hatırlatma/teşekkür).
+ * bodyText düz metindir; boş satırlar paragraf sayılır.
+ */
+export function genericEmail(input: {
+  title: string;
+  bodyText: string;
+  unsubscribeUrl?: string;
+}): RenderedEmail {
+  const paragraphs = input.bodyText
+    .split(/\r?\n\r?\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+    .map(
+      (paragraph) =>
+        `<p style="margin:0 0 16px;font-size:14px;color:#334155;line-height:1.6">${escapeHtml(paragraph).replace(/\r?\n/g, "<br />")}</p>`
+    )
+    .join("");
+
+  const unsubscribeBlock = input.unsubscribeUrl
+    ? `<p style="margin:24px 0 0;font-size:12px;color:#94a3b8">Bu maili bülten aboneliğiniz nedeniyle aldınız. <a href="${escapeHtml(input.unsubscribeUrl)}" style="color:#94a3b8">Abonelikten çıkmak için tıklayın</a>.</p>`
+    : "";
+
+  const html = emailLayout(input.title, `${paragraphs}${unsubscribeBlock}`);
+  const text =
+    input.bodyText +
+    (input.unsubscribeUrl ? `\n\nAbonelikten çık: ${input.unsubscribeUrl}` : "");
+
+  return { subject: input.title, html, text };
 }
 
 export function certificateEmail(input: {

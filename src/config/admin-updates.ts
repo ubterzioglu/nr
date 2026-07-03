@@ -16,6 +16,13 @@ export interface AdminUpdate {
 export const adminUpdates: AdminUpdate[] = [
   {
     date: "2026-07-03",
+    title: "Yoklama, sertifika sistemi ve mail merkezi",
+    description:
+      "Katılımcı listesinde katıldı/katılmadı işaretleme ve toplu yoklama eklendi. Katılanlara tek tıkla QR doğrulama kodlu PDF sertifika üretilip mail ediliyor (/sertifika-dogrula ile doğrulanabilir). Mail Merkezi'nden etkinlik kayıtlılarına, katılanlara veya bülten abonelerine toplu mail gönderilebiliyor; etkinliklerden 1 gün / 1 saat / 15 dk önce otomatik hatırlatma altyapısı hazır (CRON_SECRET ile zamanlayıcı kurulumu gerekir).",
+    tag: "yeni",
+  },
+  {
+    date: "2026-07-03",
     title: "Gerçek kayıt sistemi ve otomatik onay maili",
     description:
       "Etkinlik/webinar kayıtları artık kontenjan kontrolü ve çift kayıt engeliyle veritabanına işleniyor. Katılımcıya takvim daveti (ICS + Google Takvim) ve iptal bağlantısı içeren otomatik onay maili gönderiliyor; katılım linki yalnızca bu mailde yer alıyor. Girişli üyeler tek tıkla katılabiliyor.",

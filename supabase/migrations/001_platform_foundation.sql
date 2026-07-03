@@ -44,6 +44,7 @@ ALTER TABLE users
   ADD COLUMN IF NOT EXISTS instagram_url TEXT,
   ADD COLUMN IF NOT EXISTS interests JSONB NOT NULL DEFAULT '[]'::jsonb,
   ADD COLUMN IF NOT EXISTS newsletter_opt_in BOOLEAN NOT NULL DEFAULT false,
+  ADD COLUMN IF NOT EXISTS newsletter_token UUID NOT NULL DEFAULT gen_random_uuid(),
   ADD COLUMN IF NOT EXISTS kvkk_consent_at TIMESTAMPTZ;
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_users_username
