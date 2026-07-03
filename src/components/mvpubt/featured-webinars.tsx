@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { Play, ArrowRight } from "lucide-react";
-import { webinars } from "@/config/site";
+import { webinars as fallbackWebinars } from "@/config/site";
+import type { Webinar } from "@/types";
 import { Container } from "@/components/shared/container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { EmptySection } from "@/components/shared/empty-section";
 import { MotionStagger, MotionItem } from "@/components/shared/motion";
 import { Button } from "@/components/ui/button";
 
-export function FeaturedWebinars() {
+export function FeaturedWebinars({ webinars = fallbackWebinars }: { webinars?: Webinar[] }) {
   const upcoming = webinars.filter((w) => w.status === "upcoming");
   const featured =
     upcoming.length > 0

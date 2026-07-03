@@ -75,6 +75,45 @@ export interface Database {
         };
         Relationships: [];
       };
+      webinars: {
+        Row: {
+          id: string;
+          event_id: string | null;
+          slug: string;
+          title: string;
+          description: string | null;
+          speaker: string | null;
+          webinar_date: string | null;
+          recording_url: string | null;
+          is_featured: boolean;
+          is_published: boolean;
+        };
+        Insert: {
+          id?: string;
+          event_id?: string | null;
+          slug: string;
+          title: string;
+          description?: string | null;
+          speaker?: string | null;
+          webinar_date?: string | null;
+          recording_url?: string | null;
+          is_featured?: boolean;
+          is_published?: boolean;
+        };
+        Update: {
+          id?: string;
+          event_id?: string | null;
+          slug?: string;
+          title?: string;
+          description?: string | null;
+          speaker?: string | null;
+          webinar_date?: string | null;
+          recording_url?: string | null;
+          is_featured?: boolean;
+          is_published?: boolean;
+        };
+        Relationships: [];
+      };
       blogs: {
         Row: {
           id: string;

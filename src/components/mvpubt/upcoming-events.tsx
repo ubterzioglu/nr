@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
-import { events } from "@/config/site";
+import { events as fallbackEvents } from "@/config/site";
+import type { Event } from "@/types";
 import { Container } from "@/components/shared/container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { EmptySection } from "@/components/shared/empty-section";
@@ -9,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export function UpcomingEvents() {
+export function UpcomingEvents({ events = fallbackEvents }: { events?: Event[] }) {
   const upcoming = events.filter((e) => e.status === "upcoming").slice(0, 3);
 
   return (
