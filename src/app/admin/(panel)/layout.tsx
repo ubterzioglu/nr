@@ -5,6 +5,7 @@ import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 
 const adminLinks = [
+  { href: "/admin/updates", label: "Güncellemeler" },
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/announcements", label: "Duyurular" },
   { href: "/admin/blog", label: "Blog" },
