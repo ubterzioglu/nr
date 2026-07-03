@@ -87,6 +87,7 @@ export type ApplicationType =
   | "management"
   | "volunteer"
   | "presidency"
+  | "mentor"
   | "speaker"
   | "sponsor"
   | "partner";

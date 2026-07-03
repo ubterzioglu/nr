@@ -18,7 +18,7 @@ export type ContactFormData = z.infer<typeof contactSchema>;
 export const applicationSchema = z.object({
   fullName: z.string().min(2, "Ad soyad en az 2 karakter olmalıdır"),
   email: z.string().email("Geçerli bir e-posta adresi girin"),
-  type: z.enum(["management", "volunteer", "presidency", "speaker", "sponsor", "partner"]),
+  type: z.enum(["management", "volunteer", "presidency", "mentor", "speaker", "sponsor", "partner"]),
   city: z.string().optional(),
   message: z.string().min(20, "Mesaj en az 20 karakter olmalıdır"),
   kvkkConsent: kvkkConsentField,
