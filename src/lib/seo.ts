@@ -14,7 +14,7 @@ export function pageMetadata({
   description: string;
   path?: string;
 }): Metadata {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nexrise.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nexrise.com.tr";
   const url = `${siteUrl}${path}`;
 
   return {
@@ -27,11 +27,15 @@ export function pageMetadata({
       siteName: brand.name,
       type: "website",
       locale: "tr_TR",
+      images: [
+        { url: "/og-image.png", width: 1200, height: 630, alt: `${brand.name} — ${brand.slogan}` },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: `${title} | ${brand.name}`,
       description,
+      images: ["/og-image.png"],
     },
     alternates: { canonical: url },
   };

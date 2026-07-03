@@ -13,6 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://nexrise.com.tr"),
   title: {
     default: `${brand.name} | ${brand.slogan}`,
     template: `%s | ${brand.name}`,
@@ -38,11 +39,15 @@ export const metadata: Metadata = {
     type: "website",
     locale: "tr_TR",
     siteName: brand.name,
+    images: [
+      { url: "/og-image.png", width: 1200, height: 630, alt: `${brand.name} — ${brand.slogan}` },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${brand.name} | ${brand.slogan}`,
     description: googleSnippet,
+    images: ["/og-image.png"],
   },
   robots: { index: true, follow: true },
 };
