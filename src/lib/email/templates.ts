@@ -109,6 +109,32 @@ export function registrationConfirmationEmail(
   return { subject, html, text };
 }
 
+export function certificateEmail(input: {
+  fullName: string;
+  eventTitle: string;
+  code: string;
+  verifyUrl: string;
+}): RenderedEmail {
+  const subject = `Katılım sertifikanız hazır: ${input.eventTitle}`;
+  const html = emailLayout(
+    "Sertifikanız Hazır 🎓",
+    `<p style="margin:0 0 16px;font-size:14px;color:#334155">Merhaba ${escapeHtml(input.fullName)},</p>
+     <p style="margin:0 0 16px;font-size:14px;color:#334155">"${escapeHtml(input.eventTitle)}" etkinliğine katılımınız için teşekkür ederiz. Dijital katılım sertifikanız bu mailin ekindedir.</p>
+     <table style="border-collapse:collapse">${detailRow("Doğrulama Kodu", input.code)}</table>
+     <p style="margin:20px 0 0;font-size:14px;color:#334155">Sertifikanızın geçerliliği şu adresten kontrol edilebilir:</p>
+     <p style="margin:8px 0 0"><a href="${escapeHtml(input.verifyUrl)}" style="color:${brand.colors.primary};font-size:14px;font-weight:600">${escapeHtml(input.verifyUrl)}</a></p>`
+  );
+  const text = [
+    `Merhaba ${input.fullName},`,
+    "",
+    `"${input.eventTitle}" etkinliğine katılımınız için teşekkür ederiz.`,
+    "Dijital katılım sertifikanız bu mailin ekindedir.",
+    `Doğrulama kodu: ${input.code}`,
+    `Doğrulama adresi: ${input.verifyUrl}`,
+  ].join("\n");
+  return { subject, html, text };
+}
+
 export function registrationCancelledEmail(input: {
   fullName: string;
   eventTitle: string;

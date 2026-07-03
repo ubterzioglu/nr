@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, Download } from "lucide-react";
 import { createServerClient } from "@/lib/supabase/client";
 import { markAllUnsetAttendance } from "@/lib/actions/admin/registrations";
+import { sendCertificates } from "@/lib/actions/admin/certificates";
 import { DataTable, type DataTableColumn } from "@/components/admin/data-table";
 import { AttendanceButtons } from "@/components/admin/attendance-buttons";
 import { ConfirmButton } from "@/components/admin/confirm-button";
@@ -168,6 +169,16 @@ export async function RegistrationList({
                 Kalanları Katılmadı Yap
               </ConfirmButton>
             </>
+          )}
+          {attendedCount > 0 && (
+            <ConfirmButton
+              message={`Katıldı işaretli ${attendedCount} kişiye sertifika üretilip mail edilsin mi? (Daha önce gönderilenler atlanır)`}
+              action={sendCertificates.bind(null, targetType, targetId)}
+              variant="default"
+              destructive={false}
+            >
+              Katılanlara Sertifika Gönder
+            </ConfirmButton>
           )}
           <Button asChild variant="outline">
             <a

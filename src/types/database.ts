@@ -432,6 +432,39 @@ export interface Database {
         };
         Relationships: [];
       };
+      certificates: {
+        Row: {
+          id: string;
+          registration_id: string;
+          code: string;
+          full_name: string;
+          event_title: string;
+          event_date: string | null;
+          issued_at: string;
+          pdf_path: string | null;
+        };
+        Insert: {
+          id?: string;
+          registration_id: string;
+          code: string;
+          full_name: string;
+          event_title: string;
+          event_date?: string | null;
+          issued_at?: string;
+          pdf_path?: string | null;
+        };
+        Update: {
+          id?: string;
+          registration_id?: string;
+          code?: string;
+          full_name?: string;
+          event_title?: string;
+          event_date?: string | null;
+          issued_at?: string;
+          pdf_path?: string | null;
+        };
+        Relationships: [];
+      };
       sponsor_inquiries: {
         Row: {
           id: string;
