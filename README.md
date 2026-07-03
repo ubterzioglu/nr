@@ -64,7 +64,18 @@ Veritabanı şeması: [`supabase/schema.sql`](./supabase/schema.sql)
 
 Tablolar: `users`, `roles`, `events`, `webinars`, `blogs`, `applications`, `departments`, `board_members`, `sponsors`, `contacts`, `settings`
 
-## Deploy (Vercel)
+## Deploy
+
+### Coolify (Docker)
+
+Depo kökündeki `Dockerfile` ile deploy edilir (Next.js standalone output):
+
+1. Coolify'da yeni kaynak oluşturun → **Dockerfile** build pack'ini seçin ve bu repoyu bağlayın.
+2. Ortam değişkenlerini ekleyin (`.env.example` içindeki liste).
+   `NEXT_PUBLIC_*` değişkenleri build sırasında bundle'a gömüldüğü için Coolify'da **Build Variable** olarak işaretlenmelidir.
+3. Port: `3000`. Health check: `GET /api/health`.
+
+### Vercel
 
 ```bash
 npm run build

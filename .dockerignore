@@ -1,0 +1,17 @@
+node_modules
+.next
+.git
+.omc
+.vercel
+.env*
+!.env.example
+npm-debug.log*
+coverage
+scripts
+supabase
+Dockerfile
+.dockerignore
+README.md
+MASTER.md
+CLAUDE.md
+AGENTS.md

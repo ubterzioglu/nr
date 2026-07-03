@@ -43,9 +43,13 @@ To change site content, edit these configs, not the page components.
 
 **SEO:** every page builds metadata through `pageMetadata()` in `src/lib/seo.ts`; `sitemap.ts` and `robots.ts` live in `src/app/`.
 
+## Deployment
+
+Coolify-ready via the root `Dockerfile` (multi-stage, Next.js `output: "standalone"` in `next.config.ts`, runs as non-root on port 3000). `NEXT_PUBLIC_*` vars are baked in at build time — they are declared as Docker build args and must be marked as Build Variables in Coolify. Health check endpoint: `GET /api/health` (`src/app/api/health/route.ts`).
+
 ## Environment variables
 
-No `.env.example` exists yet (README references one). Used variables:
+See `.env.example` for the full list:
 
 - Supabase: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
 - Email: `SMTP_USER`, `SMTP_PASS` (required for forms), `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_FROM`, `FORM_NOTIFICATION_EMAIL`
