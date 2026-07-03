@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
@@ -9,8 +10,37 @@ import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 
 export function Hero() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    // React SSR çıktısına muted attribute'u yazmadığı için autoplay
+    // hidrasyon öncesi engellenebilir; burada elle tetiklenir.
+    video.muted = true;
+    video.play().catch(() => {
+      // Autoplay engellenirse poster + hero-gradient görünür kalır.
+    });
+  }, []);
+
   return (
     <section className="hero-gradient relative min-h-screen overflow-hidden pt-28 text-white">
+      <div aria-hidden="true" className="absolute inset-0">
+        <video
+          ref={videoRef}
+          className="h-full w-full object-cover opacity-70 motion-reduce:hidden"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="/videos/hero-abstract-poster.jpg"
+        >
+          <source src="/videos/hero-abstract.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-dark/70 via-brand-dark/30 to-[#0a1228]" />
+      </div>
+
       <Container className="relative flex min-h-[calc(100vh-7rem)] flex-col items-center justify-center pb-24 text-center lg:items-start lg:text-left">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
