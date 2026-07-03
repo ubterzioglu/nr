@@ -15,6 +15,7 @@ const adminLinks = [
   { href: "/admin/events", label: "Etkinlikler" },
   { href: "/admin/board", label: "Yönetim Kadrosu" },
   { href: "/admin/departments", label: "Başkanlıklar" },
+  { href: "/admin/tasks", label: "Görevler & Toplantılar" },
   { href: "/admin/sponsors", label: "Sponsorlar" },
   { href: "/admin/applications", label: "Başvurular" },
   { href: "/admin/contacts", label: "İletişim Mesajları" },

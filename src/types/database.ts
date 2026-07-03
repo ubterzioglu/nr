@@ -570,6 +570,84 @@ export interface Database {
         };
         Relationships: [];
       };
+      board_members: {
+        Row: {
+          id: string;
+          name: string;
+          role: string;
+          department: string | null;
+          bio: string | null;
+          photo_url: string | null;
+          sort_order: number;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          role: string;
+          department?: string | null;
+          bio?: string | null;
+          photo_url?: string | null;
+          sort_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          role?: string;
+          department?: string | null;
+          bio?: string | null;
+          photo_url?: string | null;
+          sort_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      departments: {
+        Row: {
+          id: string;
+          slug: string;
+          title: string;
+          description: string | null;
+          highlights: Json;
+          icon: string | null;
+          sort_order: number;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          title: string;
+          description?: string | null;
+          highlights?: Json;
+          icon?: string | null;
+          sort_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          slug?: string;
+          title?: string;
+          description?: string | null;
+          highlights?: Json;
+          icon?: string | null;
+          sort_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       settings: {
         Row: {
           id: string;
