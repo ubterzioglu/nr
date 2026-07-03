@@ -16,6 +16,13 @@ export interface AdminUpdate {
 export const adminUpdates: AdminUpdate[] = [
   {
     date: "2026-07-03",
+    title: "Veritabanı altyapısı canlıya alındı ve güvenlik doğrulandı",
+    description:
+      "Tüm veritabanı migrasyonları (001–004) canlı Supabase projesine uygulandı: etkinlik kayıtları, mail günlüğü, sertifikalar, revizyon istekleri, görev/toplantı ve denetim kaydı tabloları dahil 21 tablo hazır. Üyelik trigger'ı, 7 rol tanımı ve 4 dosya deposu (etkinlik görselleri, avatarlar, sertifikalar, dokümanlar) aktif. Güvenlik kontrolünden geçti: 21 tablonun tamamında satır seviyesi güvenlik (RLS) açık; Zoom/Meet katılım linkleri siteden okunamaz, yalnızca kayıt onay mailiyle paylaşılır.",
+    tag: "duyuru",
+  },
+  {
+    date: "2026-07-03",
     title: "Faz 3 tamamlandı: içerik, üyeler, topluluk ve ayarlar",
     description:
       "Blog/Haber/Duyuru yönetimi canlıya bağlandı. Kullanıcı yönetimi (rol atama, pasife alma, üye geçmişi), üye profili (/profil — kayıtlarım ve sertifikalarım), sponsor yönetimi, site ayarları (ana sayfa hero + sosyal bağlantılar), revizyon istekleri (üye önerileri + yorumlar), yönetim kadrosu/başkanlık/görev-toplantı modülleri ve denetim kaydı eklendi.",
