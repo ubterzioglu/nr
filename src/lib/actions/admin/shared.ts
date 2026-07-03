@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getAdminSession, type AdminSession } from "@/lib/admin/session";
+import { sessionCanAccess, type AdminModule } from "@/lib/admin/permissions";
 import { createServerClient } from "@/lib/supabase/client";
 import type { Database } from "@/types/database";
 
@@ -12,14 +13,17 @@ export type AdminContext = {
 
 /**
  * Admin server action'larının ortak girişi: oturum + service-role client.
- * Yetki yoksa veya Supabase yapılandırılmamışsa hata döner.
+ * `module` verilirse rol matrisi de uygulanır (editor/moderator kısıtları).
  */
-export async function requireAdminContext(): Promise<
+export async function requireAdminContext(module?: AdminModule): Promise<
   { ok: true; context: AdminContext } | { ok: false; error: string }
 > {
   const session = await getAdminSession();
   if (!session) {
     return { ok: false, error: "Bu işlem için yönetici girişi gerekli." };
+  }
+  if (module && !sessionCanAccess(session, module)) {
+    return { ok: false, error: "Bu modül için yetkiniz yok." };
   }
 
   const supabase = createServerClient();
