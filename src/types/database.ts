@@ -501,6 +501,45 @@ export interface Database {
         };
         Relationships: [];
       };
+      sponsors: {
+        Row: {
+          id: string;
+          name: string;
+          tier: string;
+          logo_url: string | null;
+          website_url: string | null;
+          description: string | null;
+          sort_order: number;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          tier: string;
+          logo_url?: string | null;
+          website_url?: string | null;
+          description?: string | null;
+          sort_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          tier?: string;
+          logo_url?: string | null;
+          website_url?: string | null;
+          description?: string | null;
+          sort_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       sponsor_inquiries: {
         Row: {
           id: string;
