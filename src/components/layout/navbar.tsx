@@ -8,6 +8,7 @@ import { Logo } from "@/components/shared/logo";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { AuthNavButton } from "@/components/layout/auth-nav-button";
 import { cn } from "@/lib/utils";
 
 function NavLink({
@@ -70,6 +71,7 @@ export function Navbar() {
               <Button asChild size="sm" className="ml-2">
                 <Link href="/basvurular">Katıl</Link>
               </Button>
+              <AuthNavButton />
             </nav>
 
             {/* Masaüstü — dark mode + overflow menü */}
