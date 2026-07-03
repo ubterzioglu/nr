@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import { FooterSwitch } from "@/components/layout/footer-switch";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { brand } from "@/config/site";
 import { googleSnippet } from "@/lib/seo";
@@ -61,7 +61,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <Navbar />
           <main>{children}</main>
-          <Footer />
+          <FooterSwitch />
         </ThemeProvider>
       </body>
     </html>
