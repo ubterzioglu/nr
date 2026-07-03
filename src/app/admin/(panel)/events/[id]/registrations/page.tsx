@@ -1,12 +1,24 @@
-import { RegistrationList } from "@/components/admin/registration-list";
+import {
+  RegistrationList,
+  type AttendanceFilter,
+} from "@/components/admin/registration-list";
 
 export const dynamic = "force-dynamic";
 
+const validFilters: AttendanceFilter[] = ["all", "attended", "absent", "unset"];
+
 export default async function EventRegistrationsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { id } = await params;
-  return <RegistrationList targetType="event" targetId={id} />;
+  const query = await searchParams;
+  const filter = validFilters.includes(query.filtre as AttendanceFilter)
+    ? (query.filtre as AttendanceFilter)
+    : "all";
+
+  return <RegistrationList targetType="event" targetId={id} filter={filter} />;
 }
