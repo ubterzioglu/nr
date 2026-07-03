@@ -129,36 +129,6 @@ export async function submitSponsorInquiry(data: SponsorInquiryFormData): Promis
   return { success: true };
 }
 
-export async function submitEventRegistration(data: {
-  eventSlug: string;
-  fullName: string;
-  email: string;
-}): Promise<ActionResult> {
-  const emailResult = await sendFormNotification({
-    subject: "NEXRISE — Yeni Etkinlik Kaydı",
-    fields: {
-      Etkinlik: data.eventSlug,
-      "Ad Soyad": data.fullName,
-      "E-posta": data.email,
-    },
-  });
-
-  if (!emailResult.ok) {
-    return { success: false, error: emailResult.error };
-  }
-
-  const supabase = createServerClient();
-  if (!supabase) {
-    return { success: true };
-  }
-
-  const { error } = await supabase.from("applications").insert({
-    type: "event",
-    full_name: data.fullName,
-    email: data.email,
-    message: `Etkinlik kaydı: ${data.eventSlug}`,
-  });
-
-  if (error) return { success: false, error: error.message };
-  return { success: true };
-}
+// Etkinlik/webinar kayıtları artık src/lib/actions/registration.ts'te:
+// kontenjan kontrolü, çift kayıt engeli, iptal linki ve katılımcıya
+// onay maili (ICS ekli) ile birlikte event_registrations tablosuna yazar.

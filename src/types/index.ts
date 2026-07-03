@@ -42,6 +42,7 @@ export type Webinar = {
   platform: "Zoom" | "YouTube Live" | "Google Meet";
   topics: string[];
   registrationOpen: boolean;
+  capacity?: number;
 };
 
 export type BlogPost = {

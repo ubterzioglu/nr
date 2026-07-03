@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -35,8 +35,8 @@ export function EventForm({ initialValues }: EventFormProps) {
   const [imagePreview, setImagePreview] = useState<string | null>(
     initialValues?.imageUrl ?? null
   );
-  const imageInputRef = useRef<HTMLInputElement>(null);
-  const slugTouched = useRef(isEdit);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [slugTouched, setSlugTouched] = useState(isEdit);
 
   const {
     register,
@@ -64,14 +64,17 @@ export function EventForm({ initialValues }: EventFormProps) {
   });
 
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    if (!slugTouched.current) {
+    if (!slugTouched) {
       setValue("slug", slugify(event.target.value));
     }
   }
 
   function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    setImagePreview(file ? URL.createObjectURL(file) : initialValues?.imageUrl ?? null);
+    const file = event.target.files?.[0] ?? null;
+    setImageFile(file);
+    setImagePreview(
+      file ? URL.createObjectURL(file) : initialValues?.imageUrl ?? null
+    );
   }
 
   async function onSubmit(data: AdminEventFormData) {
@@ -83,7 +86,6 @@ export function EventForm({ initialValues }: EventFormProps) {
         formData.set(key, String(value));
       }
     });
-    const imageFile = imageInputRef.current?.files?.[0];
     if (imageFile) formData.set("image", imageFile);
 
     const result = await saveEvent(formData);
@@ -99,8 +101,6 @@ export function EventForm({ initialValues }: EventFormProps) {
     <Card>
       <CardContent className="pt-6">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {isEdit && <input type="hidden" {...register("id")} />}
-
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
               <label htmlFor="event-title" className="mb-1.5 block text-sm font-medium">
@@ -121,9 +121,7 @@ export function EventForm({ initialValues }: EventFormProps) {
               <Input
                 id="event-slug"
                 {...register("slug", {
-                  onChange: () => {
-                    slugTouched.current = true;
-                  },
+                  onChange: () => setSlugTouched(true),
                 })}
               />
               {errors.slug && (
@@ -226,7 +224,6 @@ export function EventForm({ initialValues }: EventFormProps) {
             </label>
             <input
               id="event-image"
-              ref={imageInputRef}
               type="file"
               accept="image/jpeg,image/png,image/webp"
               onChange={handleImageChange}

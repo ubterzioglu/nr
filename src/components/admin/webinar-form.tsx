@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -28,8 +28,8 @@ export function WebinarForm({ initialValues }: WebinarFormProps) {
   const [imagePreview, setImagePreview] = useState<string | null>(
     initialValues?.imageUrl ?? null
   );
-  const imageInputRef = useRef<HTMLInputElement>(null);
-  const slugTouched = useRef(isEdit);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [slugTouched, setSlugTouched] = useState(isEdit);
 
   const {
     register,
@@ -55,14 +55,17 @@ export function WebinarForm({ initialValues }: WebinarFormProps) {
   });
 
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    if (!slugTouched.current) {
+    if (!slugTouched) {
       setValue("slug", slugify(event.target.value));
     }
   }
 
   function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    setImagePreview(file ? URL.createObjectURL(file) : initialValues?.imageUrl ?? null);
+    const file = event.target.files?.[0] ?? null;
+    setImageFile(file);
+    setImagePreview(
+      file ? URL.createObjectURL(file) : initialValues?.imageUrl ?? null
+    );
   }
 
   async function onSubmit(data: AdminWebinarFormData) {
@@ -74,7 +77,6 @@ export function WebinarForm({ initialValues }: WebinarFormProps) {
         formData.set(key, String(value));
       }
     });
-    const imageFile = imageInputRef.current?.files?.[0];
     if (imageFile) formData.set("image", imageFile);
 
     const result = await saveWebinar(formData);
@@ -90,8 +92,6 @@ export function WebinarForm({ initialValues }: WebinarFormProps) {
     <Card>
       <CardContent className="pt-6">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {isEdit && <input type="hidden" {...register("id")} />}
-
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
               <label htmlFor="webinar-title" className="mb-1.5 block text-sm font-medium">
@@ -112,9 +112,7 @@ export function WebinarForm({ initialValues }: WebinarFormProps) {
               <Input
                 id="webinar-slug"
                 {...register("slug", {
-                  onChange: () => {
-                    slugTouched.current = true;
-                  },
+                  onChange: () => setSlugTouched(true),
                 })}
               />
               {errors.slug && (
@@ -225,7 +223,6 @@ export function WebinarForm({ initialValues }: WebinarFormProps) {
             </label>
             <input
               id="webinar-image"
-              ref={imageInputRef}
               type="file"
               accept="image/jpeg,image/png,image/webp"
               onChange={handleImageChange}

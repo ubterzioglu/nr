@@ -28,6 +28,7 @@ function mapWebinarRow(row: WebinarRow): Webinar {
     platform: "YouTube Live",
     topics: [],
     registrationOpen: isUpcoming,
+    capacity: row.capacity ?? undefined,
   };
 }
 
@@ -53,4 +54,37 @@ export async function getPublishedWebinars(limit = 12): Promise<Webinar[]> {
   }
 
   return data.map(mapWebinarRow);
+}
+
+export type WebinarDetail = {
+  webinar: Webinar;
+  /** DB kaydıysa satır id'si; config fallback'inde null. */
+  dbId: string | null;
+};
+
+/**
+ * Slug ile tek webinar — önce DB (public view), yoksa config fallback.
+ */
+export async function getWebinarBySlug(slug: string): Promise<WebinarDetail | null> {
+  const fromConfig = () => {
+    const fallback = fallbackWebinars.find((webinar) => webinar.slug === slug);
+    return fallback ? { webinar: fallback, dbId: null } : null;
+  };
+
+  const supabase = createServerClient() ?? createBrowserClient();
+  if (!supabase) return fromConfig();
+
+  const { data, error } = await supabase
+    .from("webinars_public")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) {
+    console.error("[NEXRISE] webinar detay sorgusu başarısız:", error.message);
+    return fromConfig();
+  }
+
+  if (data) return { webinar: mapWebinarRow(data), dbId: data.id };
+  return fromConfig();
 }

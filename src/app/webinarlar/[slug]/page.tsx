@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock, Monitor, Users } from "lucide-react";
-import { webinars } from "@/config/site";
+import { getWebinarBySlug } from "@/lib/data/webinars";
+import { isRegistrationFull } from "@/lib/data/registrations";
+import { getCurrentUser } from "@/lib/supabase/server";
 import { pageMetadata } from "@/lib/seo";
 import { PageHeader } from "@/components/shared/page-header";
 import { Container } from "@/components/shared/container";
@@ -12,17 +14,13 @@ import { EventRegistrationForm } from "@/components/forms/event-registration-for
 
 type Props = { params: Promise<{ slug: string }> };
 
-export async function generateStaticParams() {
-  return webinars.map((w) => ({ slug: w.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const webinar = webinars.find((w) => w.slug === slug);
-  if (!webinar) return { title: "Webinar" };
+  const detail = await getWebinarBySlug(slug);
+  if (!detail) return { title: "Webinar" };
   return pageMetadata({
-    title: webinar.title,
-    description: webinar.description,
+    title: detail.webinar.title,
+    description: detail.webinar.description,
     path: `/webinarlar/${slug}`,
   });
 }
@@ -35,8 +33,22 @@ const statusLabel = {
 
 export default async function WebinarDetailPage({ params }: Props) {
   const { slug } = await params;
-  const webinar = webinars.find((w) => w.slug === slug);
-  if (!webinar) notFound();
+  const detail = await getWebinarBySlug(slug);
+  if (!detail) notFound();
+
+  const { webinar, dbId } = detail;
+  const [capacityFull, currentUser] = await Promise.all([
+    isRegistrationFull("webinar", dbId, webinar.capacity),
+    getCurrentUser(),
+  ]);
+
+  const member =
+    currentUser?.authUser.email
+      ? {
+          fullName: currentUser.profile?.full_name ?? currentUser.authUser.email,
+          email: currentUser.authUser.email,
+        }
+      : null;
 
   return (
     <>
@@ -54,7 +66,8 @@ export default async function WebinarDetailPage({ params }: Props) {
           <div className="flex flex-wrap gap-2">
             <Badge>{statusLabel[webinar.status]}</Badge>
             <Badge variant="secondary">{webinar.platform}</Badge>
-            <Badge variant="outline">{webinar.duration}</Badge>
+            {webinar.duration && <Badge variant="outline">{webinar.duration}</Badge>}
+            {capacityFull && <Badge variant="secondary">Kontenjan Doldu</Badge>}
           </div>
 
           <div className="mt-8 space-y-3 text-muted-foreground">
@@ -76,22 +89,35 @@ export default async function WebinarDetailPage({ params }: Props) {
             </span>
           </div>
 
-          <p className="mt-8 leading-relaxed text-muted-foreground">{webinar.longDescription}</p>
+          {webinar.longDescription && (
+            <p className="mt-8 leading-relaxed text-muted-foreground">{webinar.longDescription}</p>
+          )}
 
-          <h3 className="mb-4 mt-10 text-lg font-semibold">Konu Başlıkları</h3>
-          <div className="flex flex-wrap gap-2">
-            {webinar.topics.map((topic) => (
-              <Badge key={topic} variant="secondary">{topic}</Badge>
-            ))}
-          </div>
+          {webinar.topics.length > 0 && (
+            <>
+              <h3 className="mb-4 mt-10 text-lg font-semibold">Konu Başlıkları</h3>
+              <div className="flex flex-wrap gap-2">
+                {webinar.topics.map((topic) => (
+                  <Badge key={topic} variant="secondary">{topic}</Badge>
+                ))}
+              </div>
+            </>
+          )}
 
           {webinar.registrationOpen && webinar.status === "upcoming" && (
             <div className="mt-12 rounded-2xl border border-border bg-muted/30 p-8">
               <h3 className="text-xl font-semibold">Webinara Kayıt Ol</h3>
               <p className="mt-2 text-sm text-muted-foreground">
-                Kayıt formunu doldurarak webinar linkini e-posta ile alacaksınız.
+                {member
+                  ? "Üye hesabınla tek tıkla katıl; webinar linki e-posta ile gönderilir."
+                  : "Kayıt formunu doldurarak webinar linkini e-posta ile alacaksınız."}
               </p>
-              <EventRegistrationForm eventSlug={webinar.slug} />
+              <EventRegistrationForm
+                targetType="webinar"
+                slug={webinar.slug}
+                capacityFull={capacityFull}
+                member={member}
+              />
             </div>
           )}
 

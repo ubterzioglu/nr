@@ -35,3 +35,13 @@ export const sponsorInquirySchema = z.object({
 });
 
 export type SponsorInquiryFormData = z.infer<typeof sponsorInquirySchema>;
+
+/** Misafir etkinlik/webinar kayıt formu. `website` alanı honeypot'tur. */
+export const eventRegistrationSchema = z.object({
+  fullName: z.string().min(2, "Ad soyad en az 2 karakter olmalıdır"),
+  email: z.string().email("Geçerli bir e-posta adresi girin"),
+  kvkkConsent: kvkkConsentField,
+  website: z.string().max(0).optional().or(z.literal("")),
+});
+
+export type EventRegistrationFormData = z.infer<typeof eventRegistrationSchema>;
