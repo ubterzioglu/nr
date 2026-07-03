@@ -10,15 +10,19 @@ import { createAuthBrowserClient } from "@/lib/supabase/browser";
  * Navbar oturum düğmesi: girişli üyeye "Profilim", misafire "Giriş Yap".
  * Sayfaları dinamikleştirmemek için oturum tarayıcıda okunur.
  */
+const supabaseConfigured = Boolean(
+  process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
 export function AuthNavButton() {
-  const [state, setState] = useState<"loading" | "guest" | "member">("loading");
+  const [state, setState] = useState<"loading" | "guest" | "member">(
+    supabaseConfigured ? "loading" : "guest"
+  );
 
   useEffect(() => {
+    if (!supabaseConfigured) return;
     const supabase = createAuthBrowserClient();
-    if (!supabase) {
-      setState("guest");
-      return;
-    }
+    if (!supabase) return;
     let cancelled = false;
     supabase.auth.getUser().then(({ data }) => {
       if (!cancelled) setState(data.user ? "member" : "guest");

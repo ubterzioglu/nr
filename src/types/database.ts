@@ -570,6 +570,123 @@ export interface Database {
         };
         Relationships: [];
       };
+      revision_requests: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          author_name: string;
+          title: string;
+          description: string;
+          status: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          author_name: string;
+          title: string;
+          description: string;
+          status?: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string | null;
+          author_name?: string;
+          title?: string;
+          description?: string;
+          status?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      revision_comments: {
+        Row: {
+          id: string;
+          request_id: string;
+          user_id: string | null;
+          author_name: string;
+          is_admin: boolean;
+          body: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          request_id: string;
+          user_id?: string | null;
+          author_name: string;
+          is_admin?: boolean;
+          body: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          request_id?: string;
+          user_id?: string | null;
+          author_name?: string;
+          is_admin?: boolean;
+          body?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      tasks: {
+        Row: {
+          id: string;
+          title: string;
+          description: string | null;
+          assignee: string | null;
+          department: string | null;
+          status: string;
+          due_date: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          description?: string | null;
+          assignee?: string | null;
+          department?: string | null;
+          status?: string;
+          due_date?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          description?: string | null;
+          assignee?: string | null;
+          department?: string | null;
+          status?: string;
+          due_date?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      meetings: {
+        Row: {
+          id: string;
+          title: string;
+          meeting_date: string | null;
+          notes: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          meeting_date?: string | null;
+          notes?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          meeting_date?: string | null;
+          notes?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       events_public: {

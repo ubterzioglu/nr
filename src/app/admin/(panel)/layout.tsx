@@ -18,6 +18,7 @@ const adminLinks = [
   { href: "/admin/sponsors", label: "Sponsorlar" },
   { href: "/admin/applications", label: "Başvurular" },
   { href: "/admin/contacts", label: "İletişim Mesajları" },
+  { href: "/admin/revisions", label: "Revizyon İstekleri" },
   { href: "/admin/settings", label: "Site Ayarları" },
 ];
 
