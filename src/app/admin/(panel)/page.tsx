@@ -1,5 +1,5 @@
 import { Info } from "lucide-react";
-import { AdminDashboardStats } from "@/components/admin/admin-module-list";
+import { LiveDashboardStats } from "@/components/admin/live-dashboard-stats";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Accordion,
@@ -74,7 +74,7 @@ export default function AdminDashboardPage() {
         </CardContent>
       </Card>
 
-      <AdminDashboardStats />
+      <LiveDashboardStats />
     </div>
   );
 }
