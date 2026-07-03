@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { isAdminAuthenticated, logoutAdmin } from "@/lib/admin/session";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
@@ -19,27 +20,25 @@ const adminLinks = [
 
 export default async function AdminPanelLayout({ children }: { children: React.ReactNode }) {
   const authed = await isAdminAuthenticated();
+  if (!authed) redirect("/admin/login");
+
+  // ADMIN_SECRET tanımsızken isAdminAuthenticated geliştirme modunda
+  // herkesi içeri alır — bu durumu panelde görünür kıl.
+  const devFallback = !process.env.ADMIN_SECRET;
 
   return (
     <div className="min-h-screen bg-muted/30 pt-16">
       <Container className="py-8">
-        {!authed && (
+        {devFallback && (
           <div className="mb-8 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm">
-            Geliştirme modu aktif. Canlıda `ADMIN_SECRET` tanımlayın.{" "}
-            <Link href="/admin/login" className="font-medium underline">Giriş yap</Link>
+            Geliştirme modu aktif: şifresiz erişim. Canlıda `ADMIN_SECRET` tanımlayın.
           </div>
         )}
         <div className="mb-6 flex items-center justify-between">
           <p className="text-lg font-semibold">NEXRISE Admin</p>
-          {authed ? (
-            <form action={logoutAdmin}>
-              <Button type="submit" variant="secondary" size="sm">Çıkış</Button>
-            </form>
-          ) : (
-            <Button asChild variant="secondary" size="sm">
-              <Link href="/admin/login">Giriş</Link>
-            </Button>
-          )}
+          <form action={logoutAdmin}>
+            <Button type="submit" variant="secondary" size="sm">Çıkış</Button>
+          </form>
         </div>
         <div className="grid gap-8 lg:grid-cols-4">
           <aside className="rounded-2xl border border-border bg-card p-4">

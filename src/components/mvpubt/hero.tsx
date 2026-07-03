@@ -73,20 +73,6 @@ export function Hero() {
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-          className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 lg:block"
-        >
-          <div className="h-12 w-6 rounded-full border border-white/20 p-1">
-            <motion.div
-              animate={{ y: [0, 12, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              className="mx-auto h-2 w-2 rounded-full bg-brand-accent"
-            />
-          </div>
-        </motion.div>
       </Container>
     </section>
   );
