@@ -20,6 +20,13 @@ Corporate/community website for NEXRISE (Turkish tech & entrepreneurship communi
 
 Stack: Next.js 16 App Router · TypeScript · Tailwind CSS v4 · shadcn-style UI (`src/components/ui/`) · Framer Motion · React Hook Form + Zod · Supabase · Nodemailer.
 
+## Route strategy (pre-launch)
+
+- `/` — animated coming soon page (`src/components/coming-soon/`)
+- `/mvp` — canonical MVP homepage (renders `src/components/home/`)
+- `/mvpubt` — frontend variant of the homepage; its components under `src/components/mvpubt/` are independent copies the repo owner edits by hand — do not sync them back to `src/components/home/`. Backend (config, data layer, actions) is shared between both routes.
+- The admin panel is being built **for /mvpubt**: it manages that route's content through the shared Supabase database (no separate content store — writes to `events`/`webinars`/etc. surface on both `/mvp` and `/mvpubt` via ISR).
+
 ## Architecture
 
 **Content-as-config.** Pages contain almost no hardcoded copy. Nearly all content lives in `src/config/`:
