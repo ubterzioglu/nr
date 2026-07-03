@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import {
   requireAdminContext,
+  logAdminAction,
   type AdminActionResult,
 } from "@/lib/actions/admin/shared";
 import { isSuperAdmin } from "@/lib/admin/permissions";
@@ -45,6 +46,13 @@ export async function setUserAdminRole(
 
   if (error) return { success: false, error: error.message };
 
+  await logAdminAction(
+    guard.context,
+    "panel-yetkisi-atandi",
+    "users",
+    userId,
+    adminRole === "" ? "yetki kaldırıldı" : adminRole
+  );
   revalidatePath("/admin/users");
   return { success: true };
 }
@@ -102,6 +110,12 @@ export async function setUserActive(
 
   if (error) return { success: false, error: error.message };
 
+  await logAdminAction(
+    guard.context,
+    isActive ? "uye-aktiflestirildi" : "uye-pasife-alindi",
+    "users",
+    userId
+  );
   revalidatePath("/admin/users");
   return { success: true };
 }

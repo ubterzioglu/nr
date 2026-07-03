@@ -21,6 +21,7 @@ const adminLinks = [
   { href: "/admin/contacts", label: "İletişim Mesajları" },
   { href: "/admin/revisions", label: "Revizyon İstekleri" },
   { href: "/admin/settings", label: "Site Ayarları" },
+  { href: "/admin/audit", label: "Denetim Kaydı" },
 ];
 
 export default async function AdminPanelLayout({ children }: { children: React.ReactNode }) {

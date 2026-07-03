@@ -37,6 +37,37 @@ export async function requireAdminContext(module?: AdminModule): Promise<
   return { ok: true, context: { supabase, session } };
 }
 
+/**
+ * Admin işlem kaydı (audit log) — best effort: log hatası asıl işlemi
+ * etkilemez. Hassas modüllerdeki (kullanıcı, ayar, silme) action'lardan
+ * çağrılır.
+ */
+export async function logAdminAction(
+  context: AdminContext,
+  action: string,
+  entity: string,
+  entityId?: string | null,
+  detail?: string
+): Promise<void> {
+  const adminLabel =
+    context.session.kind === "supabase"
+      ? (context.session.fullName ?? context.session.email)
+      : context.session.kind === "legacy"
+        ? "Ortak şifre (legacy)"
+        : "Geliştirme modu";
+
+  const { error } = await context.supabase.from("audit_log").insert({
+    admin_label: adminLabel,
+    action,
+    entity,
+    entity_id: entityId ?? null,
+    detail: detail ?? null,
+  });
+  if (error) {
+    console.error("[NEXRISE] audit_log yazılamadı:", error.message);
+  }
+}
+
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES: Record<string, string> = {
   "image/jpeg": "jpg",

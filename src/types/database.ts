@@ -570,6 +570,36 @@ export interface Database {
         };
         Relationships: [];
       };
+      audit_log: {
+        Row: {
+          id: string;
+          admin_label: string;
+          action: string;
+          entity: string;
+          entity_id: string | null;
+          detail: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          admin_label: string;
+          action: string;
+          entity: string;
+          entity_id?: string | null;
+          detail?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          admin_label?: string;
+          action?: string;
+          entity?: string;
+          entity_id?: string | null;
+          detail?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
       board_members: {
         Row: {
           id: string;

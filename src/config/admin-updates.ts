@@ -16,6 +16,13 @@ export interface AdminUpdate {
 export const adminUpdates: AdminUpdate[] = [
   {
     date: "2026-07-03",
+    title: "Faz 3 tamamlandı: içerik, üyeler, topluluk ve ayarlar",
+    description:
+      "Blog/Haber/Duyuru yönetimi canlıya bağlandı. Kullanıcı yönetimi (rol atama, pasife alma, üye geçmişi), üye profili (/profil — kayıtlarım ve sertifikalarım), sponsor yönetimi, site ayarları (ana sayfa hero + sosyal bağlantılar), revizyon istekleri (üye önerileri + yorumlar), yönetim kadrosu/başkanlık/görev-toplantı modülleri ve denetim kaydı eklendi.",
+    tag: "yeni",
+  },
+  {
+    date: "2026-07-03",
     title: "Yoklama, sertifika sistemi ve mail merkezi",
     description:
       "Katılımcı listesinde katıldı/katılmadı işaretleme ve toplu yoklama eklendi. Katılanlara tek tıkla QR doğrulama kodlu PDF sertifika üretilip mail ediliyor (/sertifika-dogrula ile doğrulanabilir). Mail Merkezi'nden etkinlik kayıtlılarına, katılanlara veya bülten abonelerine toplu mail gönderilebiliyor; etkinliklerden 1 gün / 1 saat / 15 dk önce otomatik hatırlatma altyapısı hazır (CRON_SECRET ile zamanlayıcı kurulumu gerekir).",
