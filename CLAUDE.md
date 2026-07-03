@@ -44,7 +44,9 @@ To change site content, edit these configs, not the page components.
 3. Email notification via `src/lib/email/send-notification.ts` (Nodemailer/SMTP) — **email is the primary channel; if SMTP is unconfigured the action fails with a user-facing error**
 4. Supabase insert is secondary and optional — skipped silently when Supabase env vars are absent
 
-**Supabase is optional at runtime.** `createBrowserClient()`/`createServerClient()` in `src/lib/supabase/client.ts` return `null` when env vars are missing, and callers must handle that (site works fully without a database). Schema: `supabase/schema.sql`; generated-style types: `src/types/database.ts`.
+**Supabase is optional at runtime.** `createBrowserClient()`/`createServerClient()` in `src/lib/supabase/client.ts` return `null` when env vars are missing, and callers must handle that (site works fully without a database). Schema: `supabase/schema.sql`; RLS policies: `supabase/policies.sql` (anon may only read published/active content; PII tables like `contacts`/`applications` are service-role only). Both are applied to the live Supabase project. Generated-style types: `src/types/database.ts` — extend it when querying a table it doesn't cover yet.
+
+**Homepage data layer.** `src/lib/data/{events,webinars}.ts` feed `/mvp` and `/mvpubt` (ISR, `revalidate = 60`): they query published rows and fall back to the config data in `src/config/site.ts` only when Supabase is unconfigured or the query errors — an empty DB result is respected and renders the empty-state sections. Follow this pattern (query → map row to app type → fallback) when wiring more tables.
 
 **Admin panel** (`/admin`, skeleton stage): auth is a single shared password compared against `ADMIN_SECRET`, stored as an httpOnly cookie (`src/lib/admin/session.ts`). The gate lives in `src/app/admin/(panel)/layout.tsx`, not middleware. With `ADMIN_SECRET` unset, development mode counts as authenticated.
 
@@ -61,6 +63,8 @@ See `.env.example` for the full list:
 - Supabase: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
 - Email: `SMTP_USER`, `SMTP_PASS` (required for forms), `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_FROM`, `FORM_NOTIFICATION_EMAIL`
 - Site: `NEXT_PUBLIC_SITE_URL`, `ADMIN_SECRET`
+
+Real credentials live in the local `.env.local` (gitignored); it also carries `DATABASE_URL` and `SUPABASE_ACCESS_TOKEN` for tooling/migrations (the app itself never reads them). Migrations are applied by POSTing the SQL files to the Supabase Management API with that token.
 
 ## Design constraints (from MASTER.md)
 
