@@ -435,6 +435,39 @@ export interface Database {
         };
         Relationships: [];
       };
+      announcements: {
+        Row: {
+          id: string;
+          title: string;
+          content: string;
+          link: string | null;
+          is_published: boolean;
+          published_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          content: string;
+          link?: string | null;
+          is_published?: boolean;
+          published_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          content?: string;
+          link?: string | null;
+          is_published?: boolean;
+          published_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       certificates: {
         Row: {
           id: string;

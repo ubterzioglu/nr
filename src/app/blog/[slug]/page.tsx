@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { blogPosts } from "@/config/site";
-import { blogArticleBodies } from "@/config/content";
+import { getBlogPostBySlug } from "@/lib/data/blogs";
 import { pageMetadata } from "@/lib/seo";
 import { PageHeader } from "@/components/shared/page-header";
 import { Container } from "@/components/shared/container";
@@ -12,27 +12,31 @@ import { Badge } from "@/components/ui/badge";
 
 type Props = { params: Promise<{ slug: string }> };
 
+export const revalidate = 60;
+
+// Config'teki yazılar build'de üretilir; panelden eklenen DB yazıları
+// ilk istekte render edilip ISR ile önbelleğe alınır (dynamicParams).
 export async function generateStaticParams() {
   return blogPosts.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = blogPosts.find((p) => p.slug === slug);
-  if (!post) return { title: "Blog" };
+  const detail = await getBlogPostBySlug(slug);
+  if (!detail) return { title: "Blog" };
   return pageMetadata({
-    title: post.title,
-    description: post.excerpt,
+    title: detail.post.title,
+    description: detail.post.excerpt,
     path: `/blog/${slug}`,
   });
 }
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = blogPosts.find((p) => p.slug === slug);
-  if (!post) notFound();
+  const detail = await getBlogPostBySlug(slug);
+  if (!detail) notFound();
 
-  const paragraphs = blogArticleBodies[slug] ?? [post.excerpt];
+  const { post, paragraphs } = detail;
 
   return (
     <>
@@ -47,9 +51,13 @@ export default async function BlogPostPage({ params }: Props) {
           </Button>
 
           <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-            <span>{new Date(post.date).toLocaleDateString("tr-TR")}</span>
-            <span>•</span>
-            <span>{post.readTime} okuma</span>
+            {post.date && (
+              <>
+                <span>{new Date(post.date).toLocaleDateString("tr-TR")}</span>
+                <span>•</span>
+              </>
+            )}
+            {post.readTime && <span>{post.readTime} okuma</span>}
           </div>
 
           <div className="mt-4 flex flex-wrap gap-2">

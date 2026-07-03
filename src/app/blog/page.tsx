@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { blogPosts } from "@/config/site";
+import { getPublishedBlogPosts } from "@/lib/data/blogs";
 import { pageMetadata } from "@/lib/seo";
 import { PageHeader } from "@/components/shared/page-header";
 import { Container } from "@/components/shared/container";
 import { BlogList } from "@/components/blog/blog-list";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = pageMetadata({
   title: "Blog",
@@ -11,7 +13,9 @@ export const metadata: Metadata = pageMetadata({
   path: "/blog",
 });
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const posts = await getPublishedBlogPosts();
+
   return (
     <>
       <PageHeader
@@ -21,7 +25,7 @@ export default function BlogPage() {
       />
       <section className="py-20">
         <Container>
-          <BlogList posts={blogPosts} />
+          <BlogList posts={posts} />
         </Container>
       </section>
     </>
