@@ -44,6 +44,7 @@ export async function submitContact(data: ContactFormData): Promise<ActionResult
     email: parsed.data.email,
     city: parsed.data.city || null,
     message: parsed.data.message,
+    kvkk_consent_at: new Date().toISOString(),
   });
 
   if (error) return { success: false, error: error.message };
@@ -84,6 +85,7 @@ export async function submitApplication(data: ApplicationFormData): Promise<Acti
     email: parsed.data.email,
     city: parsed.data.city || null,
     message: parsed.data.message,
+    kvkk_consent_at: new Date().toISOString(),
   });
 
   if (error) return { success: false, error: error.message };
@@ -120,6 +122,7 @@ export async function submitSponsorInquiry(data: SponsorInquiryFormData): Promis
     full_name: parsed.data.contact,
     email: parsed.data.email,
     message: `[${parsed.data.company}] ${parsed.data.message}`,
+    kvkk_consent_at: new Date().toISOString(),
   });
 
   if (error) return { success: false, error: error.message };

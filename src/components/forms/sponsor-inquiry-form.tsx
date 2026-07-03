@@ -7,6 +7,7 @@ import { submitSponsorInquiry } from "@/lib/actions/forms";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { KvkkConsentField } from "@/components/forms/kvkk-consent";
 import { useState } from "react";
 
 export function SponsorInquiryForm() {
@@ -50,6 +51,11 @@ export function SponsorInquiryForm() {
         <Textarea {...register("message")} />
         {errors.message && <p className="mt-1 text-sm text-brand-error">{errors.message.message}</p>}
       </div>
+      <KvkkConsentField
+        id="sponsor-kvkk"
+        registration={register("kvkkConsent")}
+        error={errors.kvkkConsent?.message}
+      />
       <Button type="submit" disabled={isSubmitting}>İş Birliği Talebi Gönder</Button>
       {status === "success" && <p className="text-sm text-brand-success">Talebiniz alındı!</p>}
       {status === "error" && <p className="text-sm text-brand-error">Bir hata oluştu.</p>}

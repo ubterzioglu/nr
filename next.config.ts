@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
       { source: "/sponsors", destination: "/sponsorlar", permanent: true },
       { source: "/applications", destination: "/basvurular", permanent: true },
       { source: "/contact", destination: "/iletisim", permanent: true },
+      // Üyelik sistemi aktif: eski mockup giriş sayfası gerçek girişe yönlenir
+      { source: "/uye-girisi", destination: "/giris", permanent: true },
+      { source: "/login", destination: "/giris", permanent: true },
+      { source: "/register", destination: "/kayit", permanent: true },
     ];
   },
 };

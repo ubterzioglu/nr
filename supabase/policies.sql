@@ -17,11 +17,9 @@ ALTER TABLE announcements ENABLE ROW LEVEL SECURITY;
 ALTER TABLE sponsor_inquiries ENABLE ROW LEVEL SECURITY;
 
 -- Herkese açık okunabilir içerik
-CREATE POLICY "public_read_events" ON events
-  FOR SELECT USING (is_published = true);
-
-CREATE POLICY "public_read_webinars" ON webinars
-  FOR SELECT USING (is_published = true);
+-- NOT (001_platform_foundation.sql): events/webinars için doğrudan public
+-- policy KALDIRILDI — meeting_url sızıntısını önlemek için anon okuma
+-- events_public / webinars_public VIEW'ları üzerinden yapılır.
 
 CREATE POLICY "public_read_blogs" ON blogs
   FOR SELECT USING (is_published = true);
@@ -38,5 +36,8 @@ CREATE POLICY "public_read_board_members" ON board_members
 CREATE POLICY "public_read_sponsors" ON sponsors
   FOR SELECT USING (is_active = true);
 
--- users, roles, applications, contacts, settings, sponsor_inquiries:
+-- users, roles, applications, contacts, settings, sponsor_inquiries,
+-- event_registrations, email_log:
 -- public politika yok — yalnızca service role erişebilir.
+-- İstisna (001_platform_foundation.sql): girişli kullanıcı kendi users
+-- satırını okuyabilir ("users_select_own" — auth.uid() = id).

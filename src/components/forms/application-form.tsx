@@ -8,6 +8,7 @@ import { applicationTypes } from "@/config/site";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { KvkkConsentField } from "@/components/forms/kvkk-consent";
 import { useState } from "react";
 
 export function ApplicationForm() {
@@ -67,6 +68,11 @@ export function ApplicationForm() {
         <Textarea id="message" rows={5} {...register("message")} />
         {errors.message && <p className="mt-1 text-sm text-brand-error">{errors.message.message}</p>}
       </div>
+      <KvkkConsentField
+        id="application-kvkk"
+        registration={register("kvkkConsent")}
+        error={errors.kvkkConsent?.message}
+      />
       <Button type="submit" disabled={isSubmitting} size="lg">
         {isSubmitting ? "Gönderiliyor..." : "Başvuru Gönder"}
       </Button>

@@ -7,6 +7,7 @@ import { submitContact } from "@/lib/actions/forms";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { KvkkConsentField } from "@/components/forms/kvkk-consent";
 import { useState } from "react";
 
 export function ContactForm() {
@@ -50,6 +51,11 @@ export function ContactForm() {
         <Textarea id="message" placeholder="Mesajınız..." {...register("message")} />
         {errors.message && <p className="mt-1 text-sm text-brand-error">{errors.message.message}</p>}
       </div>
+      <KvkkConsentField
+        id="contact-kvkk"
+        registration={register("kvkkConsent")}
+        error={errors.kvkkConsent?.message}
+      />
       <Button type="submit" disabled={isSubmitting} className="w-full">
         {isSubmitting ? "Gönderiliyor..." : "Mesaj Gönder"}
       </Button>

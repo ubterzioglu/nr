@@ -3,7 +3,7 @@ import { webinars as fallbackWebinars } from "@/config/site";
 import type { Database } from "@/types/database";
 import type { Webinar } from "@/types";
 
-type WebinarRow = Database["public"]["Tables"]["webinars"]["Row"];
+type WebinarRow = Database["public"]["Views"]["webinars_public"]["Row"];
 
 function mapWebinarRow(row: WebinarRow): Webinar {
   const date = row.webinar_date ? new Date(row.webinar_date) : null;
@@ -39,10 +39,11 @@ export async function getPublishedWebinars(limit = 12): Promise<Webinar[]> {
   const supabase = createServerClient() ?? createBrowserClient();
   if (!supabase) return fallbackWebinars;
 
+  // webinars_public view'ı yalnızca yayınlanmış satırları ve public kolonları
+  // içerir (meeting_url hariç) — anon key ile güvenli okuma yüzeyi.
   const { data, error } = await supabase
-    .from("webinars")
+    .from("webinars_public")
     .select("*")
-    .eq("is_published", true)
     .order("webinar_date", { ascending: false })
     .limit(limit);
 

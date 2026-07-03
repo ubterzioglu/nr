@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { isAdminAuthenticated, logoutAdmin } from "@/lib/admin/session";
+import { getAdminSession, logoutAdmin } from "@/lib/admin/session";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 
@@ -19,23 +19,34 @@ const adminLinks = [
 ];
 
 export default async function AdminPanelLayout({ children }: { children: React.ReactNode }) {
-  const authed = await isAdminAuthenticated();
-  if (!authed) redirect("/admin/login");
-
-  // ADMIN_SECRET tanımsızken isAdminAuthenticated geliştirme modunda
-  // herkesi içeri alır — bu durumu panelde görünür kıl.
-  const devFallback = !process.env.ADMIN_SECRET;
+  const session = await getAdminSession();
+  if (!session) redirect("/admin/login");
 
   return (
     <div className="min-h-screen bg-muted/30 pt-16">
       <Container className="py-8">
-        {devFallback && (
+        {session.kind === "dev" && (
           <div className="mb-8 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm">
-            Geliştirme modu aktif: şifresiz erişim. Canlıda `ADMIN_SECRET` tanımlayın.
+            Geliştirme modu aktif: şifresiz erişim. Canlıda admin hesabı atayın
+            veya `ADMIN_SECRET` tanımlayın.
+          </div>
+        )}
+        {session.kind === "legacy" && (
+          <div className="mb-8 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm">
+            Ortak yönetici şifresiyle giriş yapıldı. Kişisel admin hesabına
+            geçin; geçiş tamamlanınca `ADMIN_LEGACY_LOGIN=false` ile bu yol
+            kapatılacak.
           </div>
         )}
         <div className="mb-6 flex items-center justify-between">
-          <p className="text-lg font-semibold">NEXRISE Admin</p>
+          <div>
+            <p className="text-lg font-semibold">NEXRISE Admin</p>
+            {session.kind === "supabase" && (
+              <p className="text-xs text-muted-foreground">
+                {session.fullName ?? session.email}
+              </p>
+            )}
+          </div>
           <form action={logoutAdmin}>
             <Button type="submit" variant="secondary" size="sm">Çıkış</Button>
           </form>

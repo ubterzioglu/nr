@@ -1,5 +1,20 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
+export type UserRole =
+  | "visitor"
+  | "member"
+  | "volunteer"
+  | "president"
+  | "vice_president"
+  | "board_chair"
+  | "admin";
+
+export type AdminRole = "super_admin" | "admin" | "editor" | "moderator";
+
+export type RegistrationStatus = "registered" | "cancelled";
+
+export type EmailStatus = "sent" | "failed";
+
 export interface Database {
   public: {
     Tables: {
@@ -11,6 +26,20 @@ export interface Database {
           role_id: string | null;
           city: string | null;
           avatar_url: string | null;
+          admin_role: AdminRole | null;
+          is_active: boolean;
+          username: string | null;
+          bio: string | null;
+          university: string | null;
+          high_school: string | null;
+          profession: string | null;
+          website_url: string | null;
+          linkedin_url: string | null;
+          github_url: string | null;
+          instagram_url: string | null;
+          interests: Json;
+          newsletter_opt_in: boolean;
+          kvkk_consent_at: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -21,6 +50,20 @@ export interface Database {
           role_id?: string | null;
           city?: string | null;
           avatar_url?: string | null;
+          admin_role?: AdminRole | null;
+          is_active?: boolean;
+          username?: string | null;
+          bio?: string | null;
+          university?: string | null;
+          high_school?: string | null;
+          profession?: string | null;
+          website_url?: string | null;
+          linkedin_url?: string | null;
+          github_url?: string | null;
+          instagram_url?: string | null;
+          interests?: Json;
+          newsletter_opt_in?: boolean;
+          kvkk_consent_at?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -31,8 +74,46 @@ export interface Database {
           role_id?: string | null;
           city?: string | null;
           avatar_url?: string | null;
+          admin_role?: AdminRole | null;
+          is_active?: boolean;
+          username?: string | null;
+          bio?: string | null;
+          university?: string | null;
+          high_school?: string | null;
+          profession?: string | null;
+          website_url?: string | null;
+          linkedin_url?: string | null;
+          github_url?: string | null;
+          instagram_url?: string | null;
+          interests?: Json;
+          newsletter_opt_in?: boolean;
+          kvkk_consent_at?: string | null;
           created_at?: string;
           updated_at?: string;
+        };
+        Relationships: [];
+      };
+      roles: {
+        Row: {
+          id: string;
+          name: UserRole;
+          label: string;
+          permissions: Json;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: UserRole;
+          label: string;
+          permissions?: Json;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: UserRole;
+          label?: string;
+          permissions?: Json;
+          created_at?: string;
         };
         Relationships: [];
       };
@@ -47,7 +128,14 @@ export interface Database {
           event_date: string | null;
           event_time: string | null;
           speaker: string | null;
+          location: string | null;
+          registration_url: string | null;
+          image_url: string | null;
+          capacity: number | null;
+          meeting_url: string | null;
           is_published: boolean;
+          created_at: string;
+          updated_at: string;
         };
         Insert: {
           id?: string;
@@ -55,11 +143,18 @@ export interface Database {
           title: string;
           description?: string | null;
           event_type: string;
-          status: string;
+          status?: string;
           event_date?: string | null;
           event_time?: string | null;
           speaker?: string | null;
+          location?: string | null;
+          registration_url?: string | null;
+          image_url?: string | null;
+          capacity?: number | null;
+          meeting_url?: string | null;
           is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
         };
         Update: {
           id?: string;
@@ -71,7 +166,14 @@ export interface Database {
           event_date?: string | null;
           event_time?: string | null;
           speaker?: string | null;
+          location?: string | null;
+          registration_url?: string | null;
+          image_url?: string | null;
+          capacity?: number | null;
+          meeting_url?: string | null;
           is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
         };
         Relationships: [];
       };
@@ -85,8 +187,13 @@ export interface Database {
           speaker: string | null;
           webinar_date: string | null;
           recording_url: string | null;
+          image_url: string | null;
+          capacity: number | null;
+          meeting_url: string | null;
           is_featured: boolean;
           is_published: boolean;
+          created_at: string;
+          updated_at: string;
         };
         Insert: {
           id?: string;
@@ -97,8 +204,13 @@ export interface Database {
           speaker?: string | null;
           webinar_date?: string | null;
           recording_url?: string | null;
+          image_url?: string | null;
+          capacity?: number | null;
+          meeting_url?: string | null;
           is_featured?: boolean;
           is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
         };
         Update: {
           id?: string;
@@ -109,8 +221,100 @@ export interface Database {
           speaker?: string | null;
           webinar_date?: string | null;
           recording_url?: string | null;
+          image_url?: string | null;
+          capacity?: number | null;
+          meeting_url?: string | null;
           is_featured?: boolean;
           is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      event_registrations: {
+        Row: {
+          id: string;
+          event_id: string | null;
+          webinar_id: string | null;
+          user_id: string | null;
+          full_name: string;
+          email: string;
+          status: RegistrationStatus;
+          attended: boolean | null;
+          kvkk_consent_at: string | null;
+          cancel_token: string;
+          reminder_1d_sent_at: string | null;
+          reminder_1h_sent_at: string | null;
+          reminder_15m_sent_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          event_id?: string | null;
+          webinar_id?: string | null;
+          user_id?: string | null;
+          full_name: string;
+          email: string;
+          status?: RegistrationStatus;
+          attended?: boolean | null;
+          kvkk_consent_at?: string | null;
+          cancel_token?: string;
+          reminder_1d_sent_at?: string | null;
+          reminder_1h_sent_at?: string | null;
+          reminder_15m_sent_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          event_id?: string | null;
+          webinar_id?: string | null;
+          user_id?: string | null;
+          full_name?: string;
+          email?: string;
+          status?: RegistrationStatus;
+          attended?: boolean | null;
+          kvkk_consent_at?: string | null;
+          cancel_token?: string;
+          reminder_1d_sent_at?: string | null;
+          reminder_1h_sent_at?: string | null;
+          reminder_15m_sent_at?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      email_log: {
+        Row: {
+          id: string;
+          recipient: string;
+          subject: string;
+          template: string | null;
+          status: EmailStatus;
+          error: string | null;
+          related_event_id: string | null;
+          related_webinar_id: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          recipient: string;
+          subject: string;
+          template?: string | null;
+          status: EmailStatus;
+          error?: string | null;
+          related_event_id?: string | null;
+          related_webinar_id?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          recipient?: string;
+          subject?: string;
+          template?: string | null;
+          status?: EmailStatus;
+          error?: string | null;
+          related_event_id?: string | null;
+          related_webinar_id?: string | null;
+          created_at?: string;
         };
         Relationships: [];
       };
@@ -123,6 +327,8 @@ export interface Database {
           content: string | null;
           category: string | null;
           tags: Json;
+          author_id: string | null;
+          read_time: string | null;
           is_published: boolean;
           published_at: string | null;
         };
@@ -134,6 +340,8 @@ export interface Database {
           content?: string | null;
           category?: string | null;
           tags?: Json;
+          author_id?: string | null;
+          read_time?: string | null;
           is_published?: boolean;
           published_at?: string | null;
         };
@@ -145,6 +353,8 @@ export interface Database {
           content?: string | null;
           category?: string | null;
           tags?: Json;
+          author_id?: string | null;
+          read_time?: string | null;
           is_published?: boolean;
           published_at?: string | null;
         };
@@ -159,6 +369,8 @@ export interface Database {
           city: string | null;
           message: string | null;
           status: string;
+          metadata: Json;
+          kvkk_consent_at: string | null;
           created_at: string;
         };
         Insert: {
@@ -169,6 +381,8 @@ export interface Database {
           city?: string | null;
           message?: string | null;
           status?: string;
+          metadata?: Json;
+          kvkk_consent_at?: string | null;
           created_at?: string;
         };
         Update: {
@@ -179,6 +393,8 @@ export interface Database {
           city?: string | null;
           message?: string | null;
           status?: string;
+          metadata?: Json;
+          kvkk_consent_at?: string | null;
           created_at?: string;
         };
         Relationships: [];
@@ -191,6 +407,7 @@ export interface Database {
           city: string | null;
           message: string;
           is_read: boolean;
+          kvkk_consent_at: string | null;
           created_at: string;
         };
         Insert: {
@@ -200,6 +417,7 @@ export interface Database {
           city?: string | null;
           message: string;
           is_read?: boolean;
+          kvkk_consent_at?: string | null;
           created_at?: string;
         };
         Update: {
@@ -209,14 +427,89 @@ export interface Database {
           city?: string | null;
           message?: string;
           is_read?: boolean;
+          kvkk_consent_at?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      sponsor_inquiries: {
+        Row: {
+          id: string;
+          company: string;
+          contact_name: string;
+          email: string;
+          message: string | null;
+          is_read: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          company: string;
+          contact_name: string;
+          email: string;
+          message?: string | null;
+          is_read?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          company?: string;
+          contact_name?: string;
+          email?: string;
+          message?: string | null;
+          is_read?: boolean;
           created_at?: string;
         };
         Relationships: [];
       };
     };
-    Views: Record<string, never>;
+    Views: {
+      events_public: {
+        Row: {
+          id: string;
+          slug: string;
+          title: string;
+          description: string | null;
+          event_type: string;
+          status: string;
+          event_date: string | null;
+          event_time: string | null;
+          speaker: string | null;
+          location: string | null;
+          registration_url: string | null;
+          image_url: string | null;
+          capacity: number | null;
+          is_published: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Relationships: [];
+      };
+      webinars_public: {
+        Row: {
+          id: string;
+          event_id: string | null;
+          slug: string;
+          title: string;
+          description: string | null;
+          speaker: string | null;
+          webinar_date: string | null;
+          recording_url: string | null;
+          image_url: string | null;
+          capacity: number | null;
+          is_featured: boolean;
+          is_published: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Relationships: [];
+      };
+    };
     Functions: Record<string, never>;
-    Enums: Record<string, never>;
+    Enums: {
+      user_role: UserRole;
+      admin_role: AdminRole;
+    };
     CompositeTypes: Record<string, never>;
   };
 }

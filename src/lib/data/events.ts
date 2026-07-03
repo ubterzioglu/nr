@@ -3,7 +3,7 @@ import { events as fallbackEvents } from "@/config/site";
 import type { Database } from "@/types/database";
 import type { Event } from "@/types";
 
-type EventRow = Database["public"]["Tables"]["events"]["Row"];
+type EventRow = Database["public"]["Views"]["events_public"]["Row"];
 
 const eventTypes: readonly Event["type"][] = ["workshop", "summit", "networking", "conference"];
 
@@ -30,10 +30,11 @@ export async function getPublishedEvents(limit = 12): Promise<Event[]> {
   const supabase = createServerClient() ?? createBrowserClient();
   if (!supabase) return fallbackEvents;
 
+  // events_public view'ı yalnızca yayınlanmış satırları ve public kolonları
+  // içerir (meeting_url hariç) — anon key ile güvenli okuma yüzeyi.
   const { data, error } = await supabase
-    .from("events")
+    .from("events_public")
     .select("*")
-    .eq("is_published", true)
     .order("event_date", { ascending: true })
     .limit(limit);
 
