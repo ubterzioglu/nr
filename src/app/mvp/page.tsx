@@ -3,6 +3,7 @@ import { brand } from "@/config/site";
 import { googleSnippet, pageMetadata } from "@/lib/seo";
 import { getPublishedEvents } from "@/lib/data/events";
 import { getPublishedWebinars } from "@/lib/data/webinars";
+import { CodeFreezeBanner } from "@/components/shared/code-freeze-banner";
 import { Hero } from "@/components/home/hero";
 import { AboutPreview } from "@/components/home/about-preview";
 import { Statistics } from "@/components/home/statistics";
@@ -24,12 +25,16 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
-/** MVP ana sayfa — içerik geliştirmesi bu route üzerinden devam eder */
+/**
+ * MVP ana sayfa — CODE FREEZE (2026-07-03): bu route ve src/components/home/
+ * altındaki bileşenlerde değişiklik yapılmayacaktır. Geliştirme /mvpubt'de sürer.
+ */
 export default async function MvpHomePage() {
   const [events, webinars] = await Promise.all([getPublishedEvents(), getPublishedWebinars()]);
 
   return (
     <>
+      <CodeFreezeBanner />
       <Hero />
       <AboutPreview />
       <Statistics />

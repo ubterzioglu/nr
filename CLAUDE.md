@@ -23,7 +23,7 @@ Stack: Next.js 16 App Router · TypeScript · Tailwind CSS v4 · shadcn-style UI
 ## Route strategy (pre-launch)
 
 - `/` — animated coming soon page (`src/components/coming-soon/`)
-- `/mvp` — canonical MVP homepage (renders `src/components/home/`)
+- `/mvp` — canonical MVP homepage (renders `src/components/home/`). **CODE FREEZE (2026-07-03): do not modify `src/app/mvp/` or `src/components/home/` in any way.** A visible freeze banner sits at the top of the page (`src/components/shared/code-freeze-banner.tsx`).
 - `/mvpubt` — frontend variant of the homepage; its components under `src/components/mvpubt/` are independent copies the repo owner edits by hand — do not sync them back to `src/components/home/`. Backend (config, data layer, actions) is shared between both routes.
 - The admin panel is being built **for /mvpubt**: it manages that route's content through the shared Supabase database (no separate content store — writes to `events`/`webinars`/etc. surface on both `/mvp` and `/mvpubt` via ISR).
 
