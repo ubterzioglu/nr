@@ -94,3 +94,34 @@ body {
   background: rgba(10, 18, 40, 0.7);
   border: 1px solid rgba(30, 41, 59, 0.8);
 }
+
+/* Coming soon — ambient animasyonlar (motion-reduce durumunda bileşen
+   bu elemanları statik render eder, keyframe'ler devreye girmez) */
+@keyframes cs-twinkle {
+  0%,
+  100% {
+    opacity: var(--star-max, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    opacity: calc(var(--star-max, 0.5) * 0.25);
+    transform: scale(0.75);
+  }
+}
+
+@keyframes cs-mote {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  12% {
+    opacity: var(--mote-max, 0.5);
+  }
+  80% {
+    opacity: var(--mote-max, 0.5);
+  }
+  100% {
+    transform: translateY(-46vh);
+    opacity: 0;
+  }
+}

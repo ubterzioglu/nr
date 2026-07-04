@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { brand, communityGroups } from "@/config/site";
 import { Logo } from "@/components/shared/logo";
-import { SocialBrandLogo } from "@/components/shared/social-icons";
+import { SocialBrandLogo, SocialIcon } from "@/components/shared/social-icons";
 import { cn } from "@/lib/utils";
 
 type ComingSoonProps = {
@@ -20,16 +20,33 @@ const rise = {
   },
 };
 
-/** Sabit koordinatlı yıldız noktaları — deterministik, hydration-safe */
+/**
+ * Sabit koordinatlı yıldızlar — deterministik, hydration-safe.
+ * duration/delay değerleri göz kırpmayı (cs-twinkle) desenkronize eder.
+ */
 const stars = [
-  { top: "12%", left: "18%", size: 2, opacity: 0.5 },
-  { top: "8%", left: "62%", size: 1.5, opacity: 0.35 },
-  { top: "22%", left: "80%", size: 2, opacity: 0.45 },
-  { top: "30%", left: "8%", size: 1.5, opacity: 0.3 },
-  { top: "16%", left: "40%", size: 1.5, opacity: 0.25 },
-  { top: "38%", left: "90%", size: 1.5, opacity: 0.35 },
-  { top: "45%", left: "14%", size: 2, opacity: 0.3 },
-  { top: "6%", left: "88%", size: 1.5, opacity: 0.4 },
+  { top: "12%", left: "18%", size: 2, opacity: 0.5, duration: 4.2, delay: 0 },
+  { top: "8%", left: "62%", size: 1.5, opacity: 0.35, duration: 5.6, delay: 1.2 },
+  { top: "22%", left: "80%", size: 2, opacity: 0.45, duration: 3.6, delay: 2.1 },
+  { top: "30%", left: "8%", size: 1.5, opacity: 0.3, duration: 6.4, delay: 0.6 },
+  { top: "16%", left: "40%", size: 1.5, opacity: 0.25, duration: 4.8, delay: 2.8 },
+  { top: "38%", left: "90%", size: 1.5, opacity: 0.35, duration: 5.2, delay: 1.7 },
+  { top: "45%", left: "14%", size: 2, opacity: 0.3, duration: 3.9, delay: 3.4 },
+  { top: "6%", left: "88%", size: 1.5, opacity: 0.4, duration: 6.1, delay: 0.9 },
+];
+
+/**
+ * Ufuktan yükselen ışık zerreleri ("Rise" imzası) — deterministik.
+ * Negatif delay her zerreyi döngünün farklı bir anından başlatır.
+ */
+const motes = [
+  { left: "22%", size: 3, duration: 18, delay: -4, maxOpacity: 0.4 },
+  { left: "35%", size: 2, duration: 24, delay: -12, maxOpacity: 0.3 },
+  { left: "47%", size: 3.5, duration: 16, delay: -7, maxOpacity: 0.45 },
+  { left: "55%", size: 2, duration: 26, delay: -19, maxOpacity: 0.28 },
+  { left: "64%", size: 3, duration: 20, delay: -2, maxOpacity: 0.4 },
+  { left: "76%", size: 2.5, duration: 22, delay: -15, maxOpacity: 0.32 },
+  { left: "86%", size: 2, duration: 19, delay: -9, maxOpacity: 0.26 },
 ];
 
 export function ComingSoon({ displayClassName }: ComingSoonProps) {
@@ -37,7 +54,7 @@ export function ComingSoon({ displayClassName }: ComingSoonProps) {
 
   return (
     <div className="fixed inset-0 z-[100] overflow-y-auto bg-[#050B1A] text-white">
-      {/* Atmosfer: yıldızlar + yükselen ufuk ışıması ("Rise") */}
+      {/* Atmosfer: göz kırpan yıldızlar + nefes alan ufuk + yükselen ışık zerreleri */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         {stars.map((star, i) => (
           <span
@@ -49,20 +66,57 @@ export function ComingSoon({ displayClassName }: ComingSoonProps) {
               width: star.size,
               height: star.size,
               opacity: star.opacity,
+              ...(reduceMotion
+                ? {}
+                : ({
+                    "--star-max": String(star.opacity),
+                    animation: `cs-twinkle ${star.duration}s ease-in-out ${star.delay}s infinite`,
+                  } as React.CSSProperties)),
             }}
           />
         ))}
 
+        {/* Ufuktan yükselen zerreler — yalnızca hareket tercihi açıkken */}
+        {!reduceMotion &&
+          motes.map((mote, i) => (
+            <span
+              key={i}
+              className="absolute rounded-full bg-[#5CC8FF] blur-[1px]"
+              style={{
+                top: "66%",
+                left: mote.left,
+                width: mote.size,
+                height: mote.size,
+                opacity: 0,
+                ...({
+                  "--mote-max": String(mote.maxOpacity),
+                  animation: `cs-mote ${mote.duration}s linear ${mote.delay}s infinite`,
+                } as React.CSSProperties),
+              }}
+            />
+          ))}
+
+        {/* Ufuk ışıması: giriş animasyonu + sürekli nefes alma */}
         <motion.div
           className="absolute left-1/2 top-[62%] h-[120vh] w-[170vw] -translate-x-1/2"
-          style={{
-            background:
-              "radial-gradient(ellipse 50% 42% at 50% 38%, rgba(29,111,255,0.5), rgba(42,167,255,0.16) 48%, rgba(5,11,26,0) 72%)",
-          }}
           initial={reduceMotion ? false : { y: 120, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
-        />
+        >
+          <motion.div
+            className="h-full w-full"
+            style={{
+              background:
+                "radial-gradient(ellipse 50% 42% at 50% 38%, rgba(29,111,255,0.5), rgba(42,167,255,0.16) 48%, rgba(5,11,26,0) 72%)",
+            }}
+            animate={
+              reduceMotion
+                ? undefined
+                : { scale: [1, 1.05, 1], opacity: [1, 0.85, 1] }
+            }
+            transition={{ duration: 9, ease: "easeInOut", repeat: Infinity }}
+          />
+        </motion.div>
         <motion.div
           className="absolute left-1/2 top-[68%] h-[200vh] w-[220vw] -translate-x-1/2 rounded-[50%] border-t border-[#5CC8FF]/25 shadow-[0_-24px_80px_-12px_rgba(92,200,255,0.35)]"
           initial={reduceMotion ? false : { y: 120, opacity: 0 }}
@@ -127,9 +181,26 @@ export function ComingSoon({ displayClassName }: ComingSoonProps) {
                 rel="noopener noreferrer"
                 aria-label={group.title}
                 title={group.title}
-                className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-[#2AA7FF]/40 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5CC8FF] motion-reduce:hover:translate-y-0"
+                className="group relative rounded-2xl bg-gradient-to-b from-white/15 to-white/[0.03] p-px transition-transform duration-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5CC8FF] motion-reduce:hover:translate-y-0"
               >
-                <SocialBrandLogo icon={group.platform} uid={`coming-soon-${group.slug}`} className="h-5 w-5" />
+                {/* Hover halo — marka mavisi */}
+                <span
+                  aria-hidden
+                  className="absolute -inset-1.5 rounded-[20px] bg-[#1D6FFF]/30 opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100"
+                />
+                <span className="relative flex h-[52px] w-[52px] items-center justify-center rounded-[15px] bg-[#0A1326]/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] ring-1 ring-white/5 backdrop-blur-sm transition-all duration-300 group-hover:bg-[#0D1B33]/90 group-hover:ring-[#2AA7FF]/40">
+                  {/* Sakin durum: monokrom ikon */}
+                  <SocialIcon
+                    icon={group.platform}
+                    className="absolute h-5 w-5 scale-100 text-white/60 transition-all duration-300 group-hover:scale-90 group-hover:opacity-0"
+                  />
+                  {/* Hover: resmî marka rengi belirir */}
+                  <SocialBrandLogo
+                    icon={group.platform}
+                    uid={`coming-soon-${group.slug}`}
+                    className="h-5 w-5 scale-90 opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100"
+                  />
+                </span>
               </a>
             ))}
           </div>
