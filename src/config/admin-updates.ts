@@ -15,6 +15,13 @@ export interface AdminUpdate {
  */
 export const adminUpdates: AdminUpdate[] = [
   {
+    date: "2026-07-04",
+    title: "Maskot dosyaları projeye eklendi",
+    description:
+      "NEXRISE maskotunun şeffaf arka planlı PNG paketi proje deposundaki `maskot/` klasöründe: ön/yan/arka ve 3/4 açılar, üst/alt görünümler, 6 yüz ifadesi ve laptop arka görünümü (18 dosya + README). Sosyal medya, sunum ve tasarım işlerinde buradan kullanılabilir; sitenin boş durum/404/mail gibi yüzeylerine entegrasyonu ayrıca duyurulacak.",
+    tag: "duyuru",
+  },
+  {
     date: "2026-07-03",
     title: "Veritabanı altyapısı canlıya alındı ve güvenlik doğrulandı",
     description:
