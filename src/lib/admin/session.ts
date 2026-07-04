@@ -101,6 +101,8 @@ export async function adminSignIn(data: SignInFormData): Promise<ActionResult> {
   });
 
   if (error || !authData.user) {
+    // Gerçek neden sunucu logunda kalsın (kullanıcıya genel mesaj gider)
+    console.error("[NEXRISE] Admin girişi başarısız:", error?.message ?? "kullanıcı yok");
     return { success: false, error: "E-posta veya şifre hatalı." };
   }
 
