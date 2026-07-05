@@ -4,6 +4,7 @@ import { googleSnippet, pageMetadata } from "@/lib/seo";
 import { getPublishedEvents } from "@/lib/data/events";
 import { getPublishedWebinars } from "@/lib/data/webinars";
 import { getHeroSettings, getSocialLinkSettings } from "@/lib/data/settings";
+import { BetaBanner } from "@/components/shared/beta-banner";
 import { Hero } from "@/components/mvpubt/hero";
 import { AboutPreview } from "@/components/mvpubt/about-preview";
 import { Statistics } from "@/components/mvpubt/statistics";
@@ -47,6 +48,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <BetaBanner />
       <Hero content={heroSettings ?? undefined} />
       <AboutPreview />
       <Statistics />
