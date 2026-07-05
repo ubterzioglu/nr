@@ -20,6 +20,7 @@ const adminLinks = [
   { href: "/admin/applications", label: "Başvurular" },
   { href: "/admin/contacts", label: "İletişim Mesajları" },
   { href: "/admin/revisions", label: "Revizyon İstekleri" },
+  { href: "/admin/feedback", label: "Kullanıcı Geri Bildirimleri" },
   { href: "/admin/settings", label: "Site Ayarları" },
   { href: "/admin/audit", label: "Denetim Kaydı" },
 ];

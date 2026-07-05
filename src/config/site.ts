@@ -63,6 +63,7 @@ export const primaryNavigation: NavItem[] = [
   { label: "Etkinlikler", href: "/etkinlikler" },
   { label: "Blog", href: "/blog" },
   { label: "İletişim", href: "/iletisim" },
+  { label: "Feedback Ver", href: "/geri-bildirim" },
 ];
 
 /** Masaüstü ☰ menüsünde gösterilen sayfalar */
@@ -88,6 +89,7 @@ export const mobileNavigation: NavItem[] = [
   { label: "Sponsorlar", href: "/sponsorlar" },
   { label: "Başvurular", href: "/basvurular" },
   { label: "İletişim", href: "/iletisim" },
+  { label: "Feedback Ver", href: "/geri-bildirim" },
 ];
 
 /** Footer ve diğer listeler için tam navigasyon */

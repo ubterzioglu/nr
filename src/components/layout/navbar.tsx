@@ -9,6 +9,7 @@ import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { AuthNavButton } from "@/components/layout/auth-nav-button";
+import { BetaBadge } from "@/components/shared/beta-badge";
 import { cn } from "@/lib/utils";
 
 function NavLink({
@@ -61,6 +62,7 @@ export function Navbar() {
           <div className="flex h-16 items-center justify-between lg:h-[4.5rem]">
             <Link href="/" className="inline-flex shrink-0 items-center">
               <Logo size="sm" />
+              <BetaBadge />
             </Link>
 
             {/* Masaüstü — sadece ana linkler + Katıl */}
