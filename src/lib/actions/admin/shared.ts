@@ -81,7 +81,7 @@ const ALLOWED_IMAGE_TYPES: Record<string, string> = {
  */
 export async function uploadImage(
   supabase: SupabaseClient<Database>,
-  bucket: "event-images" | "avatars",
+  bucket: "event-images" | "avatars" | "feedback-attachments",
   keyPrefix: string,
   file: File
 ): Promise<{ ok: true; url: string } | { ok: false; error: string }> {

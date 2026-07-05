@@ -15,6 +15,8 @@ export type RegistrationStatus = "registered" | "cancelled";
 
 export type EmailStatus = "sent" | "failed";
 
+export type FeedbackStatus = "open" | "reviewing" | "resolved" | "rejected";
+
 export interface Database {
   public: {
     Tables: {
@@ -812,6 +814,69 @@ export interface Database {
           title?: string;
           meeting_date?: string | null;
           notes?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      feedback: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          author_name: string;
+          title: string;
+          description: string;
+          image_url: string | null;
+          status: FeedbackStatus;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          author_name: string;
+          title: string;
+          description: string;
+          image_url?: string | null;
+          status?: FeedbackStatus;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string | null;
+          author_name?: string;
+          title?: string;
+          description?: string;
+          image_url?: string | null;
+          status?: FeedbackStatus;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      feedback_comments: {
+        Row: {
+          id: string;
+          feedback_id: string;
+          user_id: string | null;
+          author_name: string;
+          is_admin: boolean;
+          body: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          feedback_id: string;
+          user_id?: string | null;
+          author_name: string;
+          is_admin?: boolean;
+          body: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          feedback_id?: string;
+          user_id?: string | null;
+          author_name?: string;
+          is_admin?: boolean;
+          body?: string;
           created_at?: string;
         };
         Relationships: [];
