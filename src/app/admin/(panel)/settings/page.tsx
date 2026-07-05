@@ -38,7 +38,7 @@ export default async function AdminSettingsPage() {
     <div>
       <h1 className="mb-2 text-2xl font-bold">Site Ayarları</h1>
       <p className="mb-6 text-sm text-muted-foreground">
-        Ana sayfa (mvpubt) hero içeriği ve sosyal medya bağlantıları buradan
+        Ana sayfa hero içeriği ve sosyal medya bağlantıları buradan
         yönetilir; değişiklikler yaklaşık 1 dakika içinde sitede görünür.
       </p>
 

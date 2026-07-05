@@ -9,7 +9,7 @@ import {
 } from "@/lib/actions/admin/shared";
 
 function revalidateWebinarPages(slug?: string) {
-  revalidatePath("/mvpubt");
+  revalidatePath("/");
   revalidatePath("/mvp");
   revalidatePath("/webinarlar");
   if (slug) revalidatePath(`/webinarlar/${slug}`);

@@ -50,7 +50,7 @@ async function upsertSetting(key: string, value: Json): Promise<AdminActionResul
   return { success: true };
 }
 
-/** /mvpubt hero başlık/açıklama/buton metinleri (content.pdf §34). */
+/** Ana sayfa hero başlık/açıklama/buton metinleri (content.pdf §34). */
 export async function saveHeroSettings(
   input: HeroSettingsInput
 ): Promise<AdminActionResult> {
@@ -63,7 +63,7 @@ export async function saveHeroSettings(
   const result = await upsertSetting(HERO_SETTING_KEY, parsed.data);
   if (!result.success) return result;
 
-  revalidatePath("/mvpubt");
+  revalidatePath("/");
   revalidatePath("/admin/settings");
   return { success: true };
 }
@@ -81,7 +81,7 @@ export async function saveSocialSettings(
   const result = await upsertSetting(SOCIAL_SETTING_KEY, parsed.data);
   if (!result.success) return result;
 
-  revalidatePath("/mvpubt");
+  revalidatePath("/");
   revalidatePath("/admin/settings");
   return { success: true };
 }

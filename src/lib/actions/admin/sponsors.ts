@@ -23,7 +23,7 @@ const adminSponsorSchema = z.object({
 
 function revalidateSponsorPages() {
   revalidatePath("/sponsorlar");
-  revalidatePath("/mvpubt");
+  revalidatePath("/");
   revalidatePath("/admin/sponsors");
 }
 
