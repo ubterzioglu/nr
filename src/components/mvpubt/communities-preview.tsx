@@ -36,7 +36,7 @@ export function CommunitiesPreview() {
       <Container>
         <SectionHeader
           eyebrow="Başkanlıklar"
-          title="7 Başkanlık"
+          title={`${departments.length} Başkanlık`}
           description="NEXRISE ekosisteminde inovasyon, girişimcilik ve büyümeyi yöneten uzman ekipler."
         />
 
