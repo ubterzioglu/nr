@@ -15,6 +15,26 @@ export interface AdminUpdate {
  */
 export const adminUpdates: AdminUpdate[] = [
   {
+    date: "2026-07-12",
+    title: "Marka favicon'u yenilendi",
+    description:
+      "Site sekmesi ikonu, marka mavisi (#1D6FFF) zemin üzerinde beyaz yin-yang motifiyle değiştirildi.",
+    tag: "iyileştirme",
+  },
+  {
+    date: "2026-07-12",
+    title: "Başvuru/iletişim/sponsor formları artık maile bağımlı değil",
+    description:
+      "İletişim, başvuru ve sponsor formları daha önce SMTP ayarlanmadan gönderilemiyordu; e-posta bildirimi başarısız olunca kayıt veritabanına da düşmüyordu. Artık bu üç form doğrudan veritabanına yazıyor ve gönderilen başvurular admin panelinden (Başvurular / İletişim Mesajları) anında görülebiliyor; e-posta bildirimi kaldırıldı.",
+    tag: "iyileştirme",
+  },
+  {
+    date: "2026-07-12",
+    title: "BETA rozeti kaldırıldı",
+    description: "Ana sayfadaki ve navigasyondaki BETA banner/rozeti kaldırıldı.",
+    tag: "iyileştirme",
+  },
+  {
     date: "2026-07-04",
     title: "Maskot dosyaları projeye eklendi",
     description:
