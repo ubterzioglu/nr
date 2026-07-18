@@ -90,6 +90,7 @@ export const mobileNavigation: NavItem[] = [
   { label: "Başvurular", href: "/basvurular" },
   { label: "İletişim", href: "/iletisim" },
   { label: "Feedback Ver", href: "/geri-bildirim" },
+  { label: "Nasıl Kullanılır?", href: "/howto" },
 ];
 
 /** Footer ve diğer listeler için tam navigasyon */

@@ -8,6 +8,7 @@ const corporateLinks = [
   { label: "Hakkımızda", href: "/hakkimizda" },
   { label: "Yönetim", href: "/yonetim" },
   { label: "Başkanlıklar", href: "/baskanliklar" },
+  { label: "Nasıl Kullanılır?", href: "/howto" },
   { label: "Gizlilik Politikası", href: "/gizlilik-politikasi" },
   { label: "Kullanım Şartları", href: "/kullanim-sartlari" },
 ];
