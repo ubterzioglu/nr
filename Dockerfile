@@ -7,7 +7,8 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci --no-audit --no-fund
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --no-audit --no-fund
 
 # --- Build ---
 FROM base AS builder
@@ -25,7 +26,10 @@ ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL \
     NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL \
     NEXT_TELEMETRY_DISABLED=1
 
-RUN npm run build
+# .next/cache, aynı Coolify host'unda ardışık build'ler arasında Next.js'in
+# değişmeyen sayfaları/modülleri yeniden derlememesini sağlar (BuildKit cache mount).
+RUN --mount=type=cache,target=/app/.next/cache \
+    npm run build
 
 # --- Runtime ---
 FROM base AS runner
