@@ -6,6 +6,7 @@ import { isSuperAdmin, adminRoleLabels } from "@/lib/admin/permissions";
 import { setUserActive } from "@/lib/actions/admin/users";
 import { DataTable, type DataTableColumn } from "@/components/admin/data-table";
 import { UserRoleControls } from "@/components/admin/user-role-controls";
+import { AssignAdminForm } from "@/components/admin/assign-admin-form";
 import { ConfirmButton } from "@/components/admin/confirm-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -135,6 +136,8 @@ export default async function AdminUsersPage({
         Üye listesi, rol atama ve hesap durumu. Panel yetkisini yalnızca Süper
         Admin değiştirebilir.
       </p>
+
+      {canAssignAdminRole && <AssignAdminForm />}
 
       <form method="GET" className="mb-6 flex max-w-md gap-3">
         <Input name="q" defaultValue={query} placeholder="İsim veya e-posta ara..." />

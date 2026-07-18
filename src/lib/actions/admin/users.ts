@@ -57,6 +57,59 @@ export async function setUserAdminRole(
   return { success: true };
 }
 
+/** E-posta ile admin rolü atama — yalnızca süper admin. Kayıtlı üye olmalı. */
+export async function setUserAdminRoleByEmail(
+  email: string,
+  adminRole: AdminRole
+): Promise<AdminActionResult> {
+  const guard = await requireAdminContext("users");
+  if (!guard.ok) return { success: false, error: guard.error };
+  const { supabase, session } = guard.context;
+
+  if (!isSuperAdmin(session)) {
+    return { success: false, error: "Panel yetkisini yalnızca Süper Admin atayabilir." };
+  }
+
+  const normalizedEmail = email.trim().toLowerCase();
+  if (!normalizedEmail) {
+    return { success: false, error: "E-posta gerekli." };
+  }
+  if (!ADMIN_ROLES.includes(adminRole)) {
+    return { success: false, error: "Geçersiz yetki." };
+  }
+
+  const { data: user, error: lookupError } = await supabase
+    .from("users")
+    .select("id, admin_role")
+    .eq("email", normalizedEmail)
+    .maybeSingle();
+
+  if (lookupError) return { success: false, error: lookupError.message };
+  if (!user) {
+    return {
+      success: false,
+      error: "Bu e-postayla kayıtlı üye bulunamadı. Önce üye olarak kayıt olmalı.",
+    };
+  }
+
+  const { error } = await supabase
+    .from("users")
+    .update({ admin_role: adminRole })
+    .eq("id", user.id);
+
+  if (error) return { success: false, error: error.message };
+
+  await logAdminAction(
+    guard.context,
+    "panel-yetkisi-atandi",
+    "users",
+    user.id,
+    `${normalizedEmail} → ${adminRole}`
+  );
+  revalidatePath("/admin/users");
+  return { success: true };
+}
+
 /** Topluluk rolü atama (Üye/Gönüllü/Başkan…). */
 export async function setUserCommunityRole(
   userId: string,
